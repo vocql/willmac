@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will Mac — Leonida Correspondent</title>
+<meta name="description" content="Will Mac (WillMacGTA) — GTA VI trailer breakdowns, map theory and Leonida news. Live countdown to release, videos, community & merch.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Will Mac — Leonida Correspondent">
+<meta property="og:description" content="GTA VI trailer breakdowns, map theory and Leonida news. Live countdown to release, videos, community & merch.">
+<meta name="theme-color" content="#e8507a">
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES & RESET ────────────────────────────── */
+:root {
+  --sunset-a:  #ffd580;
+  --sunset-b:  #ffb347;
+  --sunset-c:  #ff8c69;
+  --sunset-d:  #e8507a;
+  --sunset-e:  #c94b8c;
+  --bg:        #04001a;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  font-family: 'Rajdhani', sans-serif;
+  overflow: hidden;
+  background-image: url('leonida/images/skyline.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* ── SHARED BG LAYERS ─────────────────────────────── */
+.bg-darken { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: rgba(4,0,26,0.55); }
+.bg-tint {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 12% 20%, rgba(255,180,80,0.07) 0%, transparent 100%),
+    radial-gradient(ellipse 65% 50% at 88% 78%, rgba(232,80,122,0.08) 0%, transparent 100%);
+}
+
+/* ── PAGE SYSTEM ──────────────────────────────────── */
+.page { position: fixed; inset: 0; z-index: 3; overflow: hidden; display: none; opacity: 0; }
+#page-about, #page-community, #page-store, #page-videos { overflow-y: auto; overflow-x: hidden; }
+.page.active { display: block; animation: pageIn 0.35s ease forwards; }
+#page-home.active { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; overflow: hidden; }
+@keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popIn { from { opacity: 0; transform: scale(0.9) translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes textShimmer { 0%{background-position:0%} 100%{background-position:300%} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ── HAMBURGER ────────────────────────────────────── */
+.hamburger-btn {
+  position: fixed; top: 22px; right: 26px; z-index: 220;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,140,80,0.05);
+  border: 1.5px solid rgba(255,140,80,0.25);
+  box-shadow: 0 0 20px rgba(255,140,80,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  transition: all 0.3s ease;
+  animation: fadeSlideIn 0.8s cubic-bezier(0.34,1.4,0.64,1) both;
+}
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateX(20px) scale(0.8); } to { opacity: 1; transform: translateX(0) scale(1); } }
+.hamburger-btn:hover { background: rgba(255,140,80,0.1); border-color: var(--sunset-b); box-shadow: 0 0 28px rgba(255,140,80,0.25), inset 0 1px 0 rgba(255,255,255,0.15); transform: scale(1.08); }
+.hamburger-btn.open { background: rgba(232,80,122,0.08); border-color: rgba(232,80,122,0.3); box-shadow: 0 0 28px rgba(232,80,122,0.2); }
+.bar { width: 20px; height: 2px; border-radius: 2px; background: var(--sunset-b); transition: transform 0.35s cubic-bezier(0.34,1.4,0.64,1), opacity 0.2s; transform-origin: center; }
+.hamburger-btn.open .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--sunset-d); }
+.hamburger-btn.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger-btn.open .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--sunset-d); }
+
+/* ── NAV OVERLAY ──────────────────────────────────── */
+.nav-overlay { position: fixed; inset: 0; z-index: 210; pointer-events: none; opacity: 0; transition: opacity 0.4s ease; }
+.nav-overlay.open { pointer-events: all; opacity: 1; }
+.nav-backdrop { position: absolute; inset: 0; background: rgba(4,0,26,0.88); backdrop-filter: blur(24px); }
+.nav-panel {
+  position: absolute; top: 0; right: 0; width: min(380px,100vw); height: 100%;
+  background: linear-gradient(160deg, rgba(255,179,71,0.04), rgba(232,80,122,0.04));
+  border-left: 1px solid rgba(255,140,80,0.12);
+  box-shadow: -30px 0 80px rgba(0,0,0,0.5);
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.34,1.2,0.64,1);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 48px; overflow: hidden;
+}
+.nav-panel::before { content: ''; position: absolute; top: -80px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(255,179,71,0.06) 0%, transparent 70%); pointer-events: none; }
+.nav-panel::after { content: ''; position: absolute; bottom: -60px; left: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(232,80,122,0.06) 0%, transparent 70%); pointer-events: none; }
+.nav-overlay.open .nav-panel { transform: translateX(0); }
+.nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,179,71,0.35); margin-bottom: 36px; }
+.nav-links { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.nav-links li { opacity: 0; transform: translateX(28px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.4,0.64,1); }
+.nav-overlay.open .nav-links li:nth-child(1){opacity:1;transform:none;transition-delay:.07s}
+.nav-overlay.open .nav-links li:nth-child(2){opacity:1;transform:none;transition-delay:.12s}
+.nav-overlay.open .nav-links li:nth-child(3){opacity:1;transform:none;transition-delay:.17s}
+.nav-overlay.open .nav-links li:nth-child(4){opacity:1;transform:none;transition-delay:.22s}
+.nav-overlay.open .nav-links li:nth-child(5){opacity:1;transform:none;transition-delay:.27s}
+.nav-links li a {
+  font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px,6vw,52px); font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; color: rgba(255,255,255,0.18);
+  display: block; padding: 9px 0; line-height: 1; cursor: pointer; transition: color 0.2s, letter-spacing 0.25s;
+}
+.nav-links li a:hover { color: #fff; letter-spacing: 0.08em; }
+.nav-links li a.active { color: #fff; }
+.nav-footer { position: absolute; bottom: 36px; left: 48px; right: 48px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; opacity: 0; transition: opacity 0.4s ease 0.38s; }
+.nav-overlay.open .nav-footer { opacity: 1; }
+.nav-footer-text { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.18); }
+.nav-footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sunset-d); box-shadow: 0 0 8px var(--sunset-d); animation: dotPulse 2s ease-in-out infinite; }
+@keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(0.55)} }
+
+/* ── SHARED TITLE / TEXT ──────────────────────────── */
+.page-title-grad {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase; line-height: 0.9;
+  background: linear-gradient(90deg, #ffd580, #ffb347, #ff8c69, #e8507a, #c94b8c, #ffb347, #ffd580);
+  background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: textShimmer 8s linear infinite;
+  filter: drop-shadow(0 2px 16px rgba(0,0,0,0.7)) drop-shadow(0 0 40px rgba(232,80,122,0.25));
+}
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 4px; }
+.count-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.22); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
+.count-badge span { color: var(--sunset-b); text-shadow: 0 0 12px rgba(255,179,71,0.5); }
+
+/* ── MAIN CONTENT WRAPPER ─────────────────────────── */
+.page-main { position: relative; padding: 90px 40px 80px; max-width: 1200px; margin: 0 auto; }
+.page-header { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) both; }
+.page-lead { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 68ch; margin-bottom: 32px; animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.05s both; }
+
+/* ── HOME PAGE ────────────────────────────────────── */
+.portrait-wrap { position: relative; display: flex; justify-content: center; align-items: center; animation: popIn 1s cubic-bezier(0.34,1.56,0.64,1) both; }
+.ring { position: absolute; width: 176px; height: 176px; border-radius: 50%; border: 1px dashed rgba(255,179,71,0.3); animation: spin 26s linear infinite; }
+.ring.r2 { width: 200px; height: 200px; border-color: rgba(232,80,122,0.25); animation-duration: 34s; animation-direction: reverse; }
+.ring::before { content: ''; position: absolute; top: -2px; left: 50%; width: 6px; height: 6px; background: var(--sunset-b); border-radius: 50%; box-shadow: 0 0 10px 2px rgba(255,179,71,0.9); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.portrait {
+  width: 150px; height: 150px; border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.85);
+  box-shadow: 0 0 0 6px rgba(255,179,71,0.12), 0 0 60px rgba(232,80,122,0.4), 0 16px 50px rgba(0,0,0,0.6);
+  overflow: hidden; position: relative; z-index: 2; background: rgba(255,255,255,0.05);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.portrait:hover { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(255,179,71,0.2), 0 0 80px rgba(232,80,122,0.55), 0 20px 60px rgba(0,0,0,0.65); }
+.portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.live-badge {
+  position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); z-index: 3;
+  display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px;
+  background: rgba(4,0,26,0.8); border: 1px solid rgba(255,255,255,0.14); backdrop-filter: blur(8px);
+  font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.75); white-space: nowrap;
+}
+.live-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #4dff88; box-shadow: 0 0 8px 2px rgba(77,255,136,0.8); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+.title-wrap { text-align: center; animation: popIn 1s cubic-bezier(0.34,1.56,0.64,1) 0.05s both; }
+.welcome-small { font-size: 15px; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 6px; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+.leonida-text {
+  font-family: 'Barlow Condensed', sans-serif; font-size: clamp(58px,11vw,120px); font-weight: 900; text-transform: uppercase; line-height: 0.88;
+  background: linear-gradient(90deg, #ffd580, #ffb347, #ff8c69, #e8507a, #c94b8c, #ffb347, #ffd580);
+  background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: textShimmer 8s linear infinite;
+  filter: drop-shadow(0 2px 16px rgba(0,0,0,0.7)) drop-shadow(0 0 40px rgba(232,80,122,0.3));
+}
+.hero-lead { max-width: 56ch; margin: 14px auto 0; font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.45); line-height: 1.7; animation: popIn 1s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
+
+.pills { display: flex; align-items: center; gap: 10px; animation: popIn 1s cubic-bezier(0.34,1.56,0.64,1) 0.15s both; }
+.pill {
+  display: flex; flex-direction: column; align-items: center; padding: 16px 26px 12px; border-radius: 14px;
+  background: rgba(4,0,26,0.55); border: 1px solid rgba(255,140,100,0.28);
+  box-shadow: 0 0 24px rgba(255,120,80,0.08), inset 0 1px 0 rgba(255,220,180,0.08), 0 8px 32px rgba(0,0,0,0.5);
+  backdrop-filter: blur(20px); position: relative; overflow: hidden; min-width: 84px;
+  transition: transform 0.25s cubic-bezier(0.34,1.4,0.64,1), box-shadow 0.25s;
+}
+.pill:hover { transform: translateY(-5px) scale(1.04); box-shadow: 0 0 40px rgba(255,140,80,0.18), inset 0 1px 0 rgba(255,220,180,0.14), 0 16px 48px rgba(0,0,0,0.6); }
+.pill.pk { border-color: rgba(232,80,122,0.28); box-shadow: 0 0 24px rgba(210,70,110,0.08), inset 0 1px 0 rgba(255,180,200,0.08), 0 8px 32px rgba(0,0,0,0.5); }
+.pill.pk:hover { box-shadow: 0 0 40px rgba(210,70,110,0.18), inset 0 1px 0 rgba(255,180,200,0.14), 0 16px 48px rgba(0,0,0,0.6); }
+.pill::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,200,120,0.25), transparent); }
+.pill::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--sunset-b), transparent); opacity: 0.5; }
+.pill.pk::after { background: linear-gradient(90deg, transparent, var(--sunset-d), transparent); }
+.pill-num {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 40px; font-weight: 900; line-height: 1;
+  background: linear-gradient(160deg, #ffd580, #ff8c69); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  min-width: 54px; text-align: center; display: block; letter-spacing: -0.02em; filter: drop-shadow(0 0 10px rgba(255,179,71,0.35));
+}
+.pk .pill-num { background: linear-gradient(160deg, #ff6fa0, #c94b8c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 10px rgba(210,70,130,0.35)); }
+.pill-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,200,160,0.4); margin-top: 4px; }
+.sep { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 900; background: linear-gradient(180deg, #ffb347, #e8507a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; opacity: 0.6; margin-bottom: 14px; animation: sepBlink 1s ease-in-out infinite; user-select: none; }
+@keyframes sepBlink { 0%,100%{opacity:.6} 50%{opacity:.12} }
+.bounce { animation: numBounce 0.45s cubic-bezier(0.34,1.8,0.64,1); }
+@keyframes numBounce { 0%{transform:scale(1.5) translateY(-6px)} 60%{transform:scale(0.9) translateY(2px)} 100%{transform:scale(1) translateY(0)} }
+.pill-tooltip {
+  position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(4px);
+  font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.7); white-space: nowrap;
+  background: rgba(4,0,26,0.9); border: 1px solid rgba(255,140,80,0.25); padding: 4px 10px; border-radius: 6px;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+}
+.pill:hover .pill-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.subtitle-wrap { animation: popIn 1s cubic-bezier(0.34,1.56,0.64,1) 0.3s both; }
+.subtitle { font-size: 11px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.35); display: flex; align-items: center; gap: 14px; }
+.subtitle-divider { width: 28px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,179,71,0.35), transparent); }
+
+/* ── SOCIAL PILLS ─────────────────────────────────── */
+.platforms { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 480px; animation: popIn 1s cubic-bezier(0.34,1.56,0.64,1) 0.4s both; }
+.platform-badge {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 9px 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.55);
+  background: rgba(4,0,26,0.45); backdrop-filter: blur(8px); text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.platform-badge svg { width: 14px; height: 14px; fill: currentColor; }
+.platform-badge:hover { border-color: var(--sunset-b); color: #fff; box-shadow: 0 0 16px rgba(255,179,71,0.2); transform: translateY(-2px); }
+
+/* ── FACT CARDS (About) ───────────────────────────── */
+.about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start; }
+.about-copy p { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.5); line-height: 1.85; margin-bottom: 16px; }
+.about-copy p:last-child { margin-bottom: 0; }
+.fact-list { display: flex; flex-direction: column; gap: 12px; }
+.fact {
+  padding: 16px 18px; border-radius: 14px;
+  border: 1px solid rgba(255,140,80,0.14); background: rgba(255,140,80,0.03);
+  opacity: 0; transform: translateY(12px); transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.34,1.4,0.64,1), border-color 0.2s;
+}
+.fact.visible { opacity: 1; transform: translateY(0); }
+.fact:nth-child(even) { border-color: rgba(232,80,122,0.14); background: rgba(232,80,122,0.03); }
+.fact-k { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sunset-b); }
+.fact-v { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; color: rgba(255,255,255,0.85); margin-top: 4px; letter-spacing: 0.02em; }
+
+/* ── VIDEO PAGE ───────────────────────────────────── */
+.video-frame {
+  position: relative; border-radius: 18px; overflow: hidden;
+  border: 1px solid rgba(255,140,80,0.18);
+  box-shadow: 0 0 50px rgba(255,140,80,0.07), 0 0 100px rgba(232,80,122,0.05), 0 12px 50px rgba(0,0,0,0.7);
+  aspect-ratio: 16/9; background: #000;
+  animation: popIn 0.9s cubic-bezier(0.34,1.4,0.64,1) 0.1s both;
+}
+.video-frame iframe { width: 100%; height: 100%; border: 0; }
+.video-note { margin-top: 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: rgba(255,255,255,0.3); }
+.yt-cta {
+  margin-top: 24px; display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 12px;
+  background: linear-gradient(100deg, var(--sunset-b), var(--sunset-d));
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase;
+  color: #1a0a12; text-decoration: none; box-shadow: 0 10px 30px rgba(198,42,146,0.3);
+  transition: transform 0.2s ease;
+}
+.yt-cta:hover { transform: translateY(-3px); }
+
+/* ── COMMUNITY CARDS ──────────────────────────────── */
+.comm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.comm-card {
+  padding: 26px 22px; border-radius: 16px;
+  border: 1px solid rgba(255,140,80,0.14); background: rgba(255,140,80,0.03);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  opacity: 0; transform: scale(0.94) translateY(12px);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.34,1.4,0.64,1), border-color 0.2s, box-shadow 0.2s;
+}
+.comm-card.visible { opacity: 1; transform: scale(1) translateY(0); }
+.comm-card:nth-child(even) { border-color: rgba(232,80,122,0.14); background: rgba(232,80,122,0.03); }
+.comm-card:hover { transform: translateY(-5px) scale(1.005); border-color: rgba(255,140,80,0.32); box-shadow: 0 14px 44px rgba(0,0,0,0.5), 0 0 20px rgba(255,140,80,0.08); }
+.comm-card svg { width: 28px; height: 28px; color: var(--sunset-b); margin-bottom: 14px; }
+.comm-card:nth-child(even) svg { color: var(--sunset-d); }
+.comm-card h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.03em; color: rgba(255,255,255,0.85); margin-bottom: 8px; }
+.comm-card p { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.45); line-height: 1.6; margin-bottom: 14px; }
+.comm-card a.go { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sunset-b); text-decoration: none; }
+.comm-card a.go:hover { text-decoration: underline; }
+
+/* ── STORE PANEL ──────────────────────────────────── */
+.store-panel {
+  display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap;
+  padding: 46px; border-radius: 22px;
+  background: linear-gradient(120deg, rgba(255,179,71,0.1), rgba(232,80,122,0.12));
+  border: 1px solid rgba(255,140,80,0.18);
+  box-shadow: 0 12px 50px rgba(0,0,0,0.5);
+  animation: popIn 0.9s cubic-bezier(0.34,1.4,0.64,1) 0.1s both;
+}
+.store-panel h2 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(28px,3vw,40px); font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: 0.02em; }
+.store-panel p { margin-top: 14px; max-width: 44ch; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+/* ── FOOTER DISCLAIMER ────────────────────────────── */
+.foot-disclaimer {
+  position: fixed; bottom: 8px; left: 0; right: 0; z-index: 60;
+  text-align: center; font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.16); pointer-events: none; padding: 0 100px;
+}
+
+/* ── RADIO PLAYER ─────────────────────────────────── */
+.radio-toggle-btn {
+  position: fixed; bottom: 22px; left: 22px; z-index: 200;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(4,0,26,0.7); border: 1.5px solid rgba(255,140,80,0.3);
+  box-shadow: 0 0 20px rgba(255,140,80,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s cubic-bezier(0.34,1.4,0.64,1), opacity 0.3s ease, visibility 0.3s ease;
+  animation: fadeSlideInLeft 0.8s cubic-bezier(0.34,1.4,0.64,1) both;
+}
+@keyframes fadeSlideInLeft { from { opacity: 0; transform: translateX(-20px) scale(0.8); } to { opacity: 1; transform: translateX(0) scale(1); } }
+.radio-toggle-btn:hover { border-color: var(--sunset-b); box-shadow: 0 0 32px rgba(255,179,71,0.3), inset 0 1px 0 rgba(255,255,255,0.12); transform: scale(1.1); }
+.radio-toggle-btn.active { border-color: var(--sunset-d); box-shadow: 0 0 28px rgba(232,80,122,0.35); background: rgba(232,80,122,0.08); }
+.radio-toggle-btn svg { width: 22px; height: 22px; fill: var(--sunset-b); transition: fill 0.3s; }
+.radio-toggle-btn.active svg { fill: var(--sunset-d); }
+.radio-toggle-btn.playing::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1.5px solid rgba(232,80,122,0.35); animation: radioRing 2s ease-out infinite; }
+@keyframes radioRing { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(1.6); opacity: 0; } }
+
+.radio-panel {
+  position: fixed; bottom: 84px; left: 22px; z-index: 199; width: 320px;
+  background: rgba(4,0,26,0.55); border: 1px solid rgba(255,140,80,0.18); border-radius: 18px;
+  box-shadow: 0 0 40px rgba(255,140,80,0.06), 0 0 80px rgba(232,80,122,0.05), 0 16px 60px rgba(0,0,0,0.7);
+  backdrop-filter: blur(28px); overflow: hidden; transform-origin: bottom left;
+  transform: scale(0.88) translateY(12px); opacity: 0; pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.34,1.4,0.64,1), opacity 0.3s ease, visibility 0.3s ease;
+}
+.radio-panel.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+.radio-panel::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px); }
+.radio-header { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.radio-station-name { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,179,71,0.7); text-shadow: 0 0 12px rgba(255,179,71,0.4); }
+.radio-freq { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: rgba(232,80,122,0.5); }
+.radio-now { position: relative; z-index: 1; padding: 14px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.radio-now-label { font-size: 9px; font-weight: 700; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-bottom: 4px; }
+.radio-now-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; line-height: 1; letter-spacing: 0.03em; text-transform: uppercase; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio-now-title.marquee-active { animation: radioMarquee 10s linear infinite; text-overflow: clip; white-space: nowrap; }
+@keyframes radioMarquee { 0%{transform:translateX(0)} 30%{transform:translateX(0)} 80%{transform:translateX(-60%)} 100%{transform:translateX(0)} }
+.radio-wave { display: flex; align-items: flex-end; gap: 3px; height: 22px; margin-top: 8px; }
+.radio-wave span { flex: 1; border-radius: 2px; background: linear-gradient(180deg, var(--sunset-d), var(--sunset-e)); opacity: 0.3; transform-origin: bottom; transition: opacity 0.3s; }
+.radio-wave.playing span { opacity: 1; animation: wvDance var(--ws) ease-in-out infinite alternate; }
+.radio-wave span:nth-child(1){height:6px;--ws:.52s}.radio-wave span:nth-child(2){height:14px;--ws:.38s}.radio-wave span:nth-child(3){height:9px;--ws:.61s}
+.radio-wave span:nth-child(4){height:18px;--ws:.44s}.radio-wave span:nth-child(5){height:11px;--ws:.57s}.radio-wave span:nth-child(6){height:20px;--ws:.35s}
+.radio-wave span:nth-child(7){height:8px;--ws:.66s}.radio-wave span:nth-child(8){height:15px;--ws:.41s}.radio-wave span:nth-child(9){height:12px;--ws:.53s}
+.radio-wave span:nth-child(10){height:17px;--ws:.48s}.radio-wave span:nth-child(11){height:7px;--ws:.62s}.radio-wave span:nth-child(12){height:13px;--ws:.37s}
+@keyframes wvDance { from{transform:scaleY(0.2)} to{transform:scaleY(1)} }
+.radio-controls { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.radio-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.45); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s cubic-bezier(0.34,1.4,0.64,1); }
+.radio-btn:hover { background: rgba(255,140,80,0.08); border-color: rgba(255,140,80,0.35); color: var(--sunset-b); transform: scale(1.12); box-shadow: 0 0 14px rgba(255,140,80,0.2); }
+.radio-btn svg { width: 14px; height: 14px; fill: currentColor; }
+.radio-btn-play { width: 46px; height: 46px; background: rgba(255,140,80,0.07); border-color: rgba(255,140,80,0.3); color: var(--sunset-b); }
+.radio-btn-play:hover { background: rgba(255,140,80,0.15); box-shadow: 0 0 22px rgba(255,140,80,0.3); }
+.radio-btn-play svg { width: 18px; height: 18px; }
+.radio-btn-play.playing { background: rgba(232,80,122,0.08); border-color: rgba(232,80,122,0.35); color: var(--sunset-d); box-shadow: 0 0 18px rgba(232,80,122,0.2); }
+.radio-vol-wrap { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 8px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.radio-vol-icon { color: rgba(255,255,255,0.25); flex-shrink: 0; }
+.radio-vol-icon svg { width: 13px; height: 13px; fill: currentColor; display: block; }
+.radio-vol-slider { flex: 1; -webkit-appearance: none; appearance: none; height: 3px; border-radius: 999px; background: rgba(255,255,255,0.1); outline: none; cursor: pointer; }
+.radio-vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--sunset-b); box-shadow: 0 0 8px rgba(255,179,71,0.5); cursor: pointer; transition: transform 0.15s; }
+.radio-vol-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
+.radio-vol-val { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 900; letter-spacing: 0.1em; color: rgba(255,255,255,0.2); min-width: 28px; text-align: right; }
+.radio-tracklist { position: relative; z-index: 1; max-height: 200px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,140,80,0.15) transparent; }
+.radio-tracklist::-webkit-scrollbar { width: 3px; }
+.radio-tracklist::-webkit-scrollbar-track { background: transparent; }
+.radio-tracklist::-webkit-scrollbar-thumb { background: rgba(255,140,80,0.15); border-radius: 4px; }
+.radio-tracklist-loading { position: relative; z-index: 1; padding: 16px; display: flex; align-items: center; gap: 10px; }
+.radio-tracklist-loading-dot { width: 6px; height: 6px; border-radius: 50%; background: #ffcc00; box-shadow: 0 0 6px #ffcc00; animation: blink 0.8s ease-in-out infinite; flex-shrink: 0; }
+.radio-tracklist-loading-text { font-size: 10px; font-weight: 600; font-family: monospace; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; }
+.radio-track { display: flex; align-items: center; gap: 10px; padding: 7px 16px; cursor: pointer; transition: background 0.15s; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.radio-track:hover { background: rgba(255,140,80,0.05); }
+.radio-track.active { background: rgba(232,80,122,0.06); }
+.radio-track-num { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 900; letter-spacing: 0.1em; color: rgba(255,255,255,0.15); min-width: 22px; }
+.radio-track.active .radio-track-num { color: var(--sunset-d); }
+.radio-track-name { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.45); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio-track.active .radio-track-name { color: rgba(255,255,255,0.85); }
+.radio-track-playing-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sunset-d); box-shadow: 0 0 6px var(--sunset-d); flex-shrink: 0; opacity: 0; animation: dotPulse 1.4s ease-in-out infinite; }
+.radio-track.active .radio-track-playing-dot { opacity: 1; }
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 780px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .store-panel { justify-content: center; text-align: center; }
+  .foot-disclaimer { display: none; }
+}
+@media (max-width: 600px) { .page-main { padding: 80px 20px 60px; } }
+@media (max-width: 500px) {
+  .pills { gap: 6px; }
+  .pill { min-width: 62px; padding: 12px 12px 10px; }
+  .pill-num { font-size: 28px; }
+  .sep { font-size: 22px; }
+  .nav-panel { padding: 70px 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BG LAYERS -->
+<div class="bg-darken"></div>
+<div class="bg-tint"></div>
+
+<!-- HAMBURGER -->
+<button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+</button>
+
+<!-- NAV OVERLAY -->
+<div class="nav-overlay" id="navOverlay">
+  <div class="nav-backdrop" id="navBackdrop"></div>
+  <div class="nav-panel">
+    <div class="nav-label">Navigation</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a data-page="home" class="active">Home</a></li>
+      <li><a data-page="videos">Videos</a></li>
+      <li><a data-page="about">About</a></li>
+      <li><a data-page="community">Community</a></li>
+      <li><a data-page="store">Store</a></li>
+    </ul>
+    <div class="nav-footer">
+      <span class="nav-footer-text">@WillMacGTA</span>
+      <div class="nav-footer-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: HOME -->
+<div id="page-home" class="page active">
+  <div class="portrait-wrap">
+    <div class="ring"></div>
+    <div class="ring r2"></div>
+    <div class="portrait">
+      <img id="logo-hero" src="" alt="Will Mac">
+      <div class="live-badge"><span class="dot"></span>Leonida Correspondent</div>
+    </div>
+  </div>
+  <div class="title-wrap">
+    <div class="welcome-small">Broadcasting from</div>
+    <div class="leonida-text">Will Mac</div>
+    <p class="hero-lead">Trailer breakdowns, map theories and Leonida news &mdash; faster and more honest than anyone else covering GTA VI.</p>
+  </div>
+  <div class="pills">
+    <div class="pill" id="pill-d">
+      <div class="pill-tooltip" id="tip-d">days to GTA VI!</div>
+      <span class="pill-num" id="n-d">000</span>
+      <span class="pill-lbl">Days</span>
+    </div>
+    <div class="sep">:</div>
+    <div class="pill pk"><span class="pill-num" id="n-h">00</span><span class="pill-lbl">Hours</span></div>
+    <div class="sep">:</div>
+    <div class="pill"><span class="pill-num" id="n-m">00</span><span class="pill-lbl">Mins</span></div>
+    <div class="sep">:</div>
+    <div class="pill pk"><span class="pill-num" id="n-s">00</span><span class="pill-lbl">Secs</span></div>
+  </div>
+  <div class="platforms">
+    <a class="platform-badge" href="https://www.youtube.com/@WillMacGTA" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M23 12s0-3.4-.4-5a3 3 0 0 0-2.1-2.1C18.9 4.5 12 4.5 12 4.5s-6.9 0-8.5.4A3 3 0 0 0 1.4 7C1 8.6 1 12 1 12s0 3.4.4 5a3 3 0 0 0 2.1 2.1c1.6.4 8.5.4 8.5.4s6.9 0 8.5-.4A3 3 0 0 0 22.6 17c.4-1.6.4-5 .4-5ZM9.8 15.3 15.8 12 9.8 8.7Z"/></svg>
+      YouTube
+    </a>
+    <a class="platform-badge" href="https://discord.gg/M3xaByEVEz" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20.3 5.4A17.6 17.6 0 0 0 15.9 4c-.2.4-.4.9-.6 1.3a16.6 16.6 0 0 0-4.6 0c-.2-.4-.4-.9-.6-1.3A17.6 17.6 0 0 0 5.7 5.4C3.2 9 2.5 12.5 2.8 16a17.8 17.8 0 0 0 5.1 2.5c.4-.5.7-1.1 1-1.7-.6-.2-1.1-.5-1.6-.8.1-.1.3-.2.4-.3a12.6 12.6 0 0 0 10.6 0c.1.1.3.2.4.3-.5.3-1 .6-1.6.8.3.6.6 1.2 1 1.7A17.8 17.8 0 0 0 21.2 16c.4-4-.6-7.5-2.9-10.6ZM9.7 13.9c-.8 0-1.4-.7-1.4-1.6s.6-1.6 1.4-1.6 1.4.7 1.4 1.6-.6 1.6-1.4 1.6Zm4.6 0c-.8 0-1.4-.7-1.4-1.6s.6-1.6 1.4-1.6 1.4.7 1.4 1.6-.6 1.6-1.4 1.6Z"/></svg>
+      Discord
+    </a>
+    <a class="platform-badge" href="https://www.tiktok.com/@willmacgta" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M16.6 2h-3.2v13.4a2.9 2.9 0 1 1-2.1-2.8V9.3a6.1 6.1 0 1 0 5.3 6V9.1a8.3 8.3 0 0 0 4.9 1.6V7.5a5 5 0 0 1-4.9-5.5Z"/></svg>
+      TikTok
+    </a>
+    <a class="platform-badge" href="https://x.com/willmacgta" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-6.9l-5.4-6.6L4.8 22H1.6l8.2-9.3L1 2h7l4.9 6.1Zm-1.2 18h1.7L6.4 3.9H4.6Z"/></svg>
+      X
+    </a>
+    <a class="platform-badge" href="https://www.instagram.com/willmacgta" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 2 .3 2.4.5.6.2 1 .5 1.5 1 .4.4.7.9 1 1.5.2.4.4 1.2.5 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 2-.5 2.4-.3.6-.6 1-1 1.5-.5.4-.9.7-1.5 1-.4.2-1.2.4-2.4.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-2-.3-2.4-.5-.6-.3-1-.6-1.5-1-.4-.5-.7-.9-1-1.5-.2-.4-.4-1.2-.5-2.4C2.1 15.6 2.1 15.2 2.1 12s0-3.6.1-4.9c.1-1.2.3-2 .5-2.4.2-.6.6-1 1-1.5.4-.4.9-.7 1.5-1 .4-.2 1.2-.4 2.4-.5C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.2 0-3.5 0-4.8.1-1 0-1.6.2-1.9.4-.5.2-.8.4-1.2.7-.3.4-.5.7-.7 1.2-.2.3-.3.9-.4 1.9-.1 1.3-.1 1.6-.1 4.8s0 3.5.1 4.8c0 1 .2 1.6.4 1.9.2.5.4.8.7 1.2.4.3.7.5 1.2.7.3.2.9.3 1.9.4 1.3.1 1.6.1 4.8.1s3.5 0 4.8-.1c1 0 1.6-.2 1.9-.4.5-.2.8-.4 1.2-.7.3-.4.5-.7.7-1.2.2-.3.3-.9.4-1.9.1-1.3.1-1.6.1-4.8s0-3.5-.1-4.8c0-1-.2-1.6-.4-1.9-.2-.5-.4-.8-.7-1.2-.4-.3-.7-.5-1.2-.7-.3-.2-.9-.3-1.9-.4-1.3-.1-1.6-.1-4.8-.1Zm0 3.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0 1.8a3.7 3.7 0 1 0 0 7.4 3.7 3.7 0 0 0 0-7.4Zm5.7-2a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Z"/></svg>
+      Instagram
+    </a>
+    <a class="platform-badge" href="https://willmac.store/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-1.5 6H5.5Zm0 0L3 2H1m4 12h13l3-9M6 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm11 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>
+      Store
+    </a>
+  </div>
+  <div class="subtitle-wrap">
+    <div class="subtitle">
+      <div class="subtitle-divider"></div>
+      <span>Fan-made · Not affiliated with Rockstar Games</span>
+      <div class="subtitle-divider"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: VIDEOS -->
+<div id="page-videos" class="page">
+  <div class="page-main">
+    <div class="page-header">
+      <div>
+        <div class="eyebrow">Will Mac ·</div>
+        <div class="page-title-grad" style="font-size:clamp(36px,6vw,68px)">Videos</div>
+      </div>
+      <div class="count-badge">Latest <span>Upload</span></div>
+    </div>
+    <p class="page-lead">New breakdowns go up on YouTube first &mdash; trailer reactions, map theories and Leonida news, delivered within hours of anything official dropping.</p>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/CWaKRtDhNi8" title="Will Mac latest video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="video-note">Subscribe to catch every breakdown the moment it drops.</div>
+    <a class="yt-cta" href="https://www.youtube.com/@WillMacGTA" target="_blank" rel="noopener">Watch on YouTube &rarr;</a>
+  </div>
+</div>
+
+<!-- PAGE: ABOUT -->
+<div id="page-about" class="page">
+  <div class="page-main">
+    <div class="page-header">
+      <div>
+        <div class="eyebrow">Will Mac ·</div>
+        <div class="page-title-grad" style="font-size:clamp(36px,6vw,68px)">About</div>
+      </div>
+      <div class="count-badge">Vice City <span>Insider</span></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy">
+        <p>Will Mac regularly posts in-depth videos on GTA VI, meticulously dissecting every frame of official footage to map out Leonida. By cross-referencing storefronts, radio stations, background details and other clues, he pieces together a clearer picture of the game world.</p>
+        <p>His channel blends timely news coverage with thoughtful fan analysis. Trailer breakdowns are posted within hours, followed by deeper dives within days. A highly engaged Discord community keeps the discussion going between uploads.</p>
+        <p>Focused and reliable, Will avoids chasing unverified leaks or hype. He delivers clear, honest coverage &mdash; distinguishing confirmed information from rumors and highlighting what's truly worth watching.</p>
+      </div>
+      <div class="fact-list" id="factList">
+        <div class="fact"><div class="fact-k">Coverage</div><div class="fact-v">GTA VI · Leonida · Vice City</div></div>
+        <div class="fact"><div class="fact-k">Content</div><div class="fact-v">Trailer Breakdowns, Map Theory, News</div></div>
+        <div class="fact"><div class="fact-k">Home Base</div><div class="fact-v">YouTube — @WillMacGTA</div></div>
+        <div class="fact"><div class="fact-k">Community</div><div class="fact-v">Discord — Live Discussion</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: COMMUNITY -->
+<div id="page-community" class="page">
+  <div class="page-main">
+    <div class="page-header">
+      <div>
+        <div class="eyebrow">Will Mac ·</div>
+        <div class="page-title-grad" style="font-size:clamp(36px,6vw,68px)">Community</div>
+      </div>
+      <div class="count-badge">Join <span>The Discussion</span></div>
+    </div>
+    <p class="page-lead">Where the Leonida theories actually get debated &mdash; trailer watch-parties, credibility-sorted leak threads, and a channel for arguing about the map that never sleeps.</p>
+    <div class="comm-grid" id="commGrid">
+      <div class="comm-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.3 5.4A17.6 17.6 0 0 0 15.9 4c-.2.4-.4.9-.6 1.3a16.6 16.6 0 0 0-4.6 0c-.2-.4-.4-.9-.6-1.3A17.6 17.6 0 0 0 5.7 5.4C3.2 9 2.5 12.5 2.8 16a17.8 17.8 0 0 0 5.1 2.5c.4-.5.7-1.1 1-1.7-.6-.2-1.1-.5-1.6-.8.1-.1.3-.2.4-.3a12.6 12.6 0 0 0 10.6 0c.1.1.3.2.4.3-.5.3-1 .6-1.6.8.3.6.6 1.2 1 1.7A17.8 17.8 0 0 0 21.2 16c.4-4-.6-7.5-2.9-10.6Z"/></svg>
+        <h3>Discord Server</h3>
+        <p>Trailer watch-parties, leak threads sorted by credibility, and a channel for arguing about the map that never sleeps.</p>
+        <a class="go" href="https://discord.gg/M3xaByEVEz" target="_blank" rel="noopener">Join the server &rarr;</a>
+      </div>
+      <div class="comm-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 8l9 6 9-6"/></svg>
+        <h3>Community Digest</h3>
+        <p>A weekly rundown of what the community pieced together &mdash; pinned to the top of the server every Friday.</p>
+        <a class="go" href="https://discord.gg/M3xaByEVEz" target="_blank" rel="noopener">See this week's &rarr;</a>
+      </div>
+      <div class="comm-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
+        <h3>Submit a Theory</h3>
+        <p>Spotted something in a frame nobody else caught? Drop it in #evidence and it might make the next video.</p>
+        <a class="go" href="https://discord.gg/M3xaByEVEz" target="_blank" rel="noopener">Start a thread &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: STORE -->
+<div id="page-store" class="page">
+  <div class="page-main">
+    <div class="page-header">
+      <div>
+        <div class="eyebrow">Will Mac ·</div>
+        <div class="page-title-grad" style="font-size:clamp(36px,6vw,68px)">Store</div>
+      </div>
+      <div class="count-badge">Wear <span>The Wave</span></div>
+    </div>
+    <div class="store-panel">
+      <div>
+        <h2>Sunset drop, out now.</h2>
+        <p>Tees, hoodies and stickers styled after the Leonida sunset &mdash; no Rockstar branding, just the gradient and the grind.</p>
+      </div>
+      <a class="yt-cta" href="https://willmac.store/" target="_blank" rel="noopener">Visit the Store &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<div class="foot-disclaimer">Fan-made GTA VI coverage. Not affiliated with Rockstar Games or Take-Two Interactive.</div>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop preload="auto"><source src="leonida/music/relax.mp3" type="audio/mpeg"></audio>
+
+<!-- RADIO TOGGLE -->
+<button class="radio-toggle-btn" id="radioToggleBtn" aria-label="Toggle radio">
+  <svg viewBox="0 0 24 24"><path d="M20 6H4l-2-4h20l-2 4zm1 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM8 16a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-2a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9-3h-4v-1h4v1zm0 2h-4v-1h4v1zm0 2h-4v-1h4v1z"/></svg>
+</button>
+
+<!-- RADIO PANEL -->
+<div class="radio-panel" id="radioPanel">
+  <div class="radio-header">
+    <div class="radio-station-name">WMAC Radio</div>
+    <div class="radio-freq">102.3 MHz</div>
+  </div>
+  <div class="radio-now">
+    <div class="radio-now-label">Now Playing</div>
+    <div class="radio-now-title" id="radioNowTitle">Loading tracks…</div>
+    <div class="radio-wave" id="radioWave">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span>
+    </div>
+  </div>
+  <div class="radio-controls">
+    <button class="radio-btn" id="radioPrevBtn" title="Previous">
+      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+    </button>
+    <button class="radio-btn radio-btn-play" id="radioPlayBtn" title="Play / Pause">
+      <svg id="radioIconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="radioIconPause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <button class="radio-btn" id="radioNextBtn" title="Next">
+      <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5-4v8l-5.5-4zM16 6h2v12h-2z"/></svg>
+    </button>
+    <button class="radio-btn" id="radioShuffleBtn" title="Shuffle" style="margin-left:4px">
+      <svg viewBox="0 0 24 24"><path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+    </button>
+  </div>
+  <div class="radio-vol-wrap">
+    <div class="radio-vol-icon"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></div>
+    <input class="radio-vol-slider" id="radioVolSlider" type="range" min="0" max="100" value="50">
+    <div class="radio-vol-val" id="radioVolVal">50</div>
+  </div>
+  <div class="radio-tracklist" id="radioTracklist">
+    <div class="radio-tracklist-loading" id="radioTracklistLoading">
+      <div class="radio-tracklist-loading-dot"></div>
+      <div class="radio-tracklist-loading-text">Scanning leonida/music/ …</div>
+    </div>
+  </div>
+</div>
+<audio id="radioAudio" preload="none"></audio>
+
+<script>
+'use strict';
+
+/* ── LOGO (single source of truth) ─────────────────
+   Replace this data-URI with your own hosted image path if you'd rather
+   not inline a base64 string, e.g.  const LOGO = "leonida/images/willmac.jpg"; */
+const LOGO = "leonida/images/willmac.jpg";
+document.getElementById('logo-hero').src = LOGO;
+
+/* ── HAMBURGER ──────────────────────────────────── */
+const hBtn        = document.getElementById('hamburgerBtn');
+const overlay     = document.getElementById('navOverlay');
+const backdrop    = document.getElementById('navBackdrop');
+const radioPanel      = document.getElementById('radioPanel');
+const radioToggleBtn  = document.getElementById('radioToggleBtn');
+
+function toggleMenu(force) {
+  if (typeof force === 'boolean') {
+    if (force) overlay.classList.add('open'); else overlay.classList.remove('open');
+  } else {
+    overlay.classList.toggle('open');
+  }
+  const isOpen = overlay.classList.contains('open');
+  hBtn.classList.toggle('open', isOpen);
+  radioToggleBtn.style.opacity       = isOpen ? '0' : '';
+  radioToggleBtn.style.visibility    = isOpen ? 'hidden' : '';
+  radioToggleBtn.style.pointerEvents = isOpen ? 'none' : '';
+  if (isOpen) { radioPanel.classList.remove('open'); radioToggleBtn.classList.remove('active'); }
+  radioPanel.style.opacity       = isOpen ? '0' : '';
+  radioPanel.style.visibility    = isOpen ? 'hidden' : '';
+  radioPanel.style.pointerEvents = isOpen ? 'none' : '';
+}
+hBtn.addEventListener('click', () => toggleMenu());
+backdrop.addEventListener('click', () => toggleMenu(false));
+
+/* ── PAGE ROUTING ───────────────────────────────── */
+const pages      = document.querySelectorAll('.page');
+const navAnchors = document.querySelectorAll('[data-page]');
+const initialized = {};
+function showPage(id) {
+  pages.forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (!page) return;
+  page.classList.add('active');
+  navAnchors.forEach(a => a.classList.toggle('active', a.dataset.page === id));
+  toggleMenu(false);
+  if (!initialized[id]) {
+    initialized[id] = true;
+    if (id === 'about')     revealCards(document.querySelectorAll('#factList .fact'));
+    if (id === 'community') revealCards(document.querySelectorAll('#commGrid .comm-card'));
+  }
+  page.scrollTop = 0;
+}
+function revealCards(nodes) {
+  nodes.forEach((el, i) => setTimeout(() => el.classList.add('visible'), i * 70));
+}
+navAnchors.forEach(a => a.addEventListener('click', e => { e.preventDefault(); showPage(a.dataset.page); }));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && overlay.classList.contains('open')) toggleMenu(false);
+});
+
+/* ── COUNTDOWN (to GTA VI release) ─────────────────*/
+const prev = { d:'', h:'', m:'', s:'' };
+function bounce(id) {
+  const el = document.getElementById('n-' + id);
+  el.classList.remove('bounce'); void el.offsetWidth; el.classList.add('bounce');
+  setTimeout(() => el.classList.remove('bounce'), 500);
+}
+function tick() {
+  const target = new Date('2026-11-19T00:00:00');
+  const diff   = target - new Date();
+  if (diff <= 0) { ['d','h','m','s'].forEach(k => document.getElementById('n-' + k).textContent = '00'); return; }
+  const d = String(Math.floor(diff / 86400000)).padStart(3, '0');
+  const h = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+  const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+  const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+  if (d !== prev.d) { document.getElementById('n-d').textContent = d; bounce('d'); prev.d = d; const tip = document.getElementById('tip-d'); if (tip) tip.textContent = d + ' days to GTA VI!'; }
+  if (h !== prev.h) { document.getElementById('n-h').textContent = h; bounce('h'); prev.h = h; }
+  if (m !== prev.m) { document.getElementById('n-m').textContent = m; bounce('m'); prev.m = m; }
+  if (s !== prev.s) { document.getElementById('n-s').textContent = s; bounce('s'); prev.s = s; }
+}
+tick(); setInterval(tick, 1000);
+
+/* ── RADIO PLAYER ───────────────────────────────── */
+let songs = [];
+const radioAudio      = document.getElementById('radioAudio');
+const radioPlayBtn    = document.getElementById('radioPlayBtn');
+const radioIconPlay   = document.getElementById('radioIconPlay');
+const radioIconPause  = document.getElementById('radioIconPause');
+const radioPrevBtn    = document.getElementById('radioPrevBtn');
+const radioNextBtn    = document.getElementById('radioNextBtn');
+const radioShuffleBtn = document.getElementById('radioShuffleBtn');
+const radioNowTitle   = document.getElementById('radioNowTitle');
+const radioWave       = document.getElementById('radioWave');
+const radioTracklist  = document.getElementById('radioTracklist');
+const radioVolSlider  = document.getElementById('radioVolSlider');
+const radioVolVal     = document.getElementById('radioVolVal');
+let radioIdx = 0, radioPlaying = false, radioShuffle = false;
+radioAudio.volume = 0.5;
+
+async function loadGithubMusic() {
+  const GITHUB_USER='vocql', GITHUB_REPO='leonida', GITHUB_BRANCH='main', MUSIC_PATH='leonida/music';
+  const AUDIO_EXTS=['.mp3','.ogg','.wav','.flac','.aac','.m4a'];
+  const loadingEl = document.getElementById('radioTracklistLoading');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${MUSIC_PATH}?ref=${GITHUB_BRANCH}`, { headers: { 'Accept': 'application/vnd.github.v3+json' } });
+    if (!res.ok) throw new Error('GitHub API returned ' + res.status);
+    const files = await res.json();
+    if (!Array.isArray(files)) throw new Error('Unexpected response');
+    const audioFiles = files.filter(f => f.type === 'file' && AUDIO_EXTS.some(ext => f.name.toLowerCase().endsWith(ext)));
+    if (!audioFiles.length) {
+      if (loadingEl) loadingEl.innerHTML = '<div class="radio-tracklist-loading-text" style="color:rgba(255,80,80,0.5)">No audio files found in leonida/music/</div>';
+      radioNowTitle.textContent = 'No tracks found'; return;
+    }
+    songs = audioFiles.map(f => {
+      const src  = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${MUSIC_PATH}/${f.name}`;
+      const name = f.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      return { n: name, s: src };
+    });
+    if (loadingEl) loadingEl.remove();
+    songs.forEach((song, i) => {
+      const row = document.createElement('div');
+      row.className = 'radio-track'; row.dataset.idx = i;
+      row.innerHTML = `<span class="radio-track-num">${String(i+1).padStart(2,'0')}</span><span class="radio-track-name">${song.n}</span><span class="radio-track-playing-dot"></span>`;
+      row.addEventListener('click', () => radioPlayIdx(i));
+      radioTracklist.appendChild(row);
+    });
+    radioUpdateTrack();
+  } catch (err) {
+    console.error('Radio: failed to load tracklist —', err);
+    if (loadingEl) {
+      loadingEl.querySelector('.radio-tracklist-loading-dot').style.background = '#ff3040';
+      loadingEl.querySelector('.radio-tracklist-loading-dot').style.boxShadow  = '0 0 6px #ff3040';
+      loadingEl.querySelector('.radio-tracklist-loading-text').textContent = 'Could not load tracks';
+    }
+    radioNowTitle.textContent = 'No tracks';
+  }
+}
+function radioSetPlaying(state) {
+  radioPlaying = state;
+  radioPlayBtn.classList.toggle('playing', state);
+  radioIconPlay.style.display  = state ? 'none' : '';
+  radioIconPause.style.display = state ? '' : 'none';
+  radioWave.classList.toggle('playing', state);
+  radioToggleBtn.classList.toggle('playing', state);
+}
+function radioUpdateTrack() {
+  if (!songs.length) return;
+  const song = songs[radioIdx];
+  radioNowTitle.textContent = song.n;
+  radioNowTitle.classList.remove('marquee-active');
+  void radioNowTitle.offsetWidth;
+  if (song.n.length > 18) radioNowTitle.classList.add('marquee-active');
+  document.querySelectorAll('.radio-track').forEach(r => r.classList.toggle('active', parseInt(r.dataset.idx) === radioIdx));
+  const active = radioTracklist.querySelector('.radio-track.active');
+  if (active) active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+function radioPlayIdx(idx) {
+  if (!songs.length) return;
+  radioIdx = idx;
+  radioAudio.src = songs[radioIdx].s;
+  radioAudio.load();
+  radioAudio.play().then(() => radioSetPlaying(true)).catch(() => radioSetPlaying(false));
+  radioUpdateTrack();
+}
+function radioNext() {
+  if (!songs.length) return;
+  if (radioShuffle) { const r = songs.map((_,i)=>i).filter(i=>i!==radioIdx); radioIdx = r.length ? r[Math.floor(Math.random()*r.length)] : 0; }
+  else radioIdx = (radioIdx + 1) % songs.length;
+  radioPlayIdx(radioIdx);
+}
+function radioPrev() {
+  if (!songs.length) return;
+  if (radioAudio.currentTime > 3) { radioAudio.currentTime = 0; return; }
+  radioIdx = (radioIdx - 1 + songs.length) % songs.length;
+  radioPlayIdx(radioIdx);
+}
+radioToggleBtn.addEventListener('click', () => {
+  radioPanel.classList.toggle('open');
+  radioToggleBtn.classList.toggle('active', radioPanel.classList.contains('open'));
+});
+radioPlayBtn.addEventListener('click', () => {
+  if (!songs.length) return;
+  if (radioAudio.src && !radioAudio.src.endsWith(window.location.href)) {
+    if (radioPlaying) { radioAudio.pause(); radioSetPlaying(false); }
+    else { radioAudio.play().then(() => radioSetPlaying(true)).catch(() => {}); }
+  } else { radioPlayIdx(0); }
+});
+radioPrevBtn.addEventListener('click', radioPrev);
+radioNextBtn.addEventListener('click', radioNext);
+radioAudio.addEventListener('ended', radioNext);
+radioShuffleBtn.addEventListener('click', () => {
+  radioShuffle = !radioShuffle;
+  radioShuffleBtn.style.color       = radioShuffle ? 'var(--sunset-b)' : '';
+  radioShuffleBtn.style.borderColor = radioShuffle ? 'rgba(255,140,80,0.35)' : '';
+  radioShuffleBtn.style.boxShadow   = radioShuffle ? '0 0 12px rgba(255,140,80,0.2)' : '';
+});
+radioVolSlider.addEventListener('input', () => {
+  const v = parseInt(radioVolSlider.value);
+  radioAudio.volume = v / 100;
+  radioVolVal.textContent = v;
+});
+loadGithubMusic();
+</script>
+</body>
+</html>
